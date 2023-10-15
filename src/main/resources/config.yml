@@ -1,0 +1,30 @@
+waystones:
+  names: "words" # How to generate waystone names: words, numbers, random-letters
+  max-teleport-distance: 3000 # Max distance a player can teleport with a waystone
+  teleport-cooldown: 0 # Cooldown between teleports (in seconds)
+  teleport-cost:
+    type: none # Cost type: none, xp, item
+    levels: 0 # Cost amount for xpLevel
+    item: # For item cost
+      type: minecraft:diamond
+      amount: 1
+  teleport-sound: minecraft:entity.enderman.teleport # Sound played when teleporting
+
+spawning:
+  villages: true # Allow waystones to spawn in villages
+
+crafting:
+  enabled: true # Allow crafting of waystones
+  recipe:
+    type: shaped # Recipe type: shaped, shapeless
+    shape:
+    - 'DGD'
+    - 'GWG'
+    - 'DGD'
+    ingredients:
+      D:
+        type: minecraft:diamond
+      G:
+        type: minecraft:gold_ingot
+      W:
+        type: minecraft:compass

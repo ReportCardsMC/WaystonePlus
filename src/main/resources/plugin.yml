@@ -1,0 +1,4 @@
+name: WaystonePlus
+version: '${version}'
+main: xyz.reportcards.waystoneplus.WaystonePlus
+api-version: '1.17'
