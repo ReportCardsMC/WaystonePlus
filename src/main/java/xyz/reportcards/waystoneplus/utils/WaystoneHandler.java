@@ -5,6 +5,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -164,7 +165,7 @@ public class WaystoneHandler {
                 setCooldown(player);
 
                 WaystoneConfig config = WaystonePlus.getInstance().getWaystoneConfig();
-                ItemStack item = new ItemStack(Bukkit.createBlockData(config.teleportCostItemType).getMaterial(), config.teleportCostItemAmount);
+                ItemStack item = new ItemStack(Objects.requireNonNull(Material.getMaterial(config.teleportCostItemType)), config.teleportCostItemAmount);
 
                 if (!player.getInventory().containsAtLeast(item, config.teleportCostItemAmount)) {
                     player.sendMessage(Component.text("You need at least " + config.teleportCostItemAmount + " " + item.getType().name() + " to teleport!", NamedTextColor.RED));

@@ -3,9 +3,12 @@ package xyz.reportcards.waystoneplus.utils;
 import de.tr7zw.changeme.nbtapi.NBT;
 import net.kyori.adventure.inventory.Book;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import xyz.reportcards.waystoneplus.listeners.CommandListener;
 import xyz.reportcards.waystoneplus.utils.nbt.NBTCustomBlock;
@@ -19,6 +22,11 @@ public class WaystoneHelper {
 
     public static ItemStack createWaystoneItem() {
         ItemStack stack = new ItemStack(Material.LODESTONE);
+        stack.editMeta(meta -> {
+            meta.displayName(Component.text("Waystone", NamedTextColor.LIGHT_PURPLE));
+            meta.addEnchant(Enchantment.LOYALTY, 1, true);
+            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        });
         NBT.modify(stack, nbt -> {
             nbt.setBoolean(WAYSTONE_NBT_TAG, true);
         });

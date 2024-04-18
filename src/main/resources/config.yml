@@ -6,7 +6,7 @@ waystones:
     type: none # Cost type: none, xp, item
     levels: 0 # Cost amount for xpLevel
     item: # For item cost
-      type: minecraft:diamond
+      type: DIAMOND
       amount: 1
   teleport-sound: minecraft:entity.enderman.teleport # Sound played when teleporting
 
@@ -14,11 +14,11 @@ crafting:
   enabled: true # Allow crafting of waystones
   recipe:
     type: shaped # Recipe type: shaped, shapeless
-    shape:
+    shape: # If shapeless, doesn't take shape into account, rather only the amount of items
     - 'DGD'
     - 'GWG'
     - 'DGD'
     ingredients:
-      D: minecraft:diamond
-      G: minecraft:gold_ingot
-      W: minecraft:compass
+      D: DIAMOND
+      G: GOLD_INGOT
+      W: COMPASS

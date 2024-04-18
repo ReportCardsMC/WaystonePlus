@@ -79,6 +79,7 @@ public class WaystoneConfig {
         }
 
         if (this.craftingEnabled && (this.craftingRecipeShape == null || this.craftingRecipeIngredients.isEmpty())) {
+            craftingEnabled = false;
             throw new IllegalStateException("Crafting is enabled but the recipe is not properly configured!");
         }
     }
