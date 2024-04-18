@@ -10,6 +10,8 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import xyz.reportcards.waystoneplus.WaystonePlus;
+import xyz.reportcards.waystoneplus.configuration.WaystoneConfig;
 import xyz.reportcards.waystoneplus.listeners.CommandListener;
 import xyz.reportcards.waystoneplus.utils.Pair;
 import xyz.reportcards.waystoneplus.utils.SimpleLocation;
@@ -89,7 +91,11 @@ public class WaystoneHelper {
     private static Map<SimpleLocation, Double> calculateDistancesToWaystones(SimpleLocation clickedWaystoneLocation) {
         Map<SimpleLocation, Double> waystoneDistances = new HashMap<>();
         for (Pair<String, SimpleLocation> waystone : WaystoneHandler.cachedWaystones) {
-            waystoneDistances.put(waystone.second, clickedWaystoneLocation.distance(waystone.second));
+            double distance = clickedWaystoneLocation.distance(waystone.second);
+            if (distance >= WaystonePlus.getInstance().getWaystoneConfig().maxTeleportDistance)
+                continue;
+
+            waystoneDistances.put(waystone.second, distance);
         }
         return waystoneDistances;
     }
@@ -102,6 +108,7 @@ public class WaystoneHelper {
     private static List<SimpleLocation> sortWaystonesByDistance(Map<SimpleLocation, Double> waystoneDistances) {
         List<SimpleLocation> sortedWaystoneLocations = new ArrayList<>(waystoneDistances.keySet());
         sortedWaystoneLocations.sort(Comparator.comparingDouble(waystoneDistances::get));
+        WaystoneConfig config = WaystonePlus.getInstance().getWaystoneConfig();
         return sortedWaystoneLocations;
     }
 
