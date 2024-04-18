@@ -32,6 +32,11 @@ public class RecipeHandler {
         }
     }
 
+    /**
+     * Register a shapeless recipe
+     * @param plugin The plugin instance
+     * @param waystoneConfig The waystone configuration
+     */
     private static void registerShapeless(WaystonePlus plugin, WaystoneConfig waystoneConfig) {
 
         ShapelessRecipe recipe = new ShapelessRecipe(NamespacedKey.fromString("waystoneplus:waystone", plugin), WaystoneHelper.createWaystoneItem());
@@ -77,6 +82,11 @@ public class RecipeHandler {
         Bukkit.addRecipe(recipe);
     }
 
+    /**
+     * Register a shaped recipe
+     * @param plugin The plugin instance
+     * @param waystoneConfig The waystone configuration
+     */
     private static void registerShaped(WaystonePlus plugin, WaystoneConfig waystoneConfig) {
         ShapedRecipe recipe = new ShapedRecipe(NamespacedKey.fromString("waystoneplus:waystone", plugin), WaystoneHelper.createWaystoneItem());
         recipe.shape(waystoneConfig.craftingRecipeShape);
