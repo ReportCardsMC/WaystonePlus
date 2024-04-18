@@ -26,7 +26,7 @@ import xyz.reportcards.waystoneplus.utils.nbt.models.WaystoneNBT;
 
 import java.util.ArrayList;
 
-public class PlayerListener implements Listener {
+public class WaystoneListener implements Listener {
 
     private static final Material WAYSTONE_BLOCK = Material.LODESTONE;
 

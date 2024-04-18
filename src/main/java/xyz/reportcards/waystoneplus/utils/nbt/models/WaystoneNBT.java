@@ -11,6 +11,10 @@ public class WaystoneNBT {
     public boolean publicWaystone = false;
     public String waystoneName;
 
+    /**
+     * Create a new waystone NBT instance with a random name
+     * @param exclude The list of names to exclude
+     */
     public WaystoneNBT(ArrayList<String> exclude) {
         WaystoneConfig.NameGeneration generation = WaystonePlus.getInstance().getWaystoneConfig().nameGeneration;
         if (generation == WaystoneConfig.NameGeneration.WORDS)
@@ -21,6 +25,11 @@ public class WaystoneNBT {
             waystoneName = RandomString.generateOnlyNumbers(6, exclude);
     }
 
+    /**
+     * Get waystone data from a JSON string
+     * @param json The JSON string to parse
+     * @return The waystone data
+     */
     public static WaystoneNBT fromString(String json) {
         return WaystonePlus.getInstance().getGson().fromJson(json, WaystoneNBT.class);
     }

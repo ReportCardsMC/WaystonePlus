@@ -20,11 +20,19 @@ public class NBTCustomTileEntity extends NBTTileEntity implements NBTCustom {
         convert();
     }
 
+    /**
+     * Delete the custom NBT data
+     */
     @Override
     public void deleteCustomNBT() {
         getPersistentDataContainer().removeKey(KEY);
     }
 
+    /**
+     * Get the NBTCompound of this {@link BlockState}
+     * @param name The name of the compound
+     * @return NBTCompound of this block
+     */
     @Override
     public NBTCompound getOrCreateCompound(String name) {
         if (name.equals("custom")) {
@@ -37,6 +45,11 @@ public class NBTCustomTileEntity extends NBTTileEntity implements NBTCustom {
         }
     }
 
+    /**
+     * Get the NBTCompound of this {@link BlockState}
+     * @param name The name of the compound
+     * @return NBTCompound of this block
+     */
     @Override
     public NBTCompound getCompound(String name) {
         if (name.equals("custom")) {
@@ -45,6 +58,11 @@ public class NBTCustomTileEntity extends NBTTileEntity implements NBTCustom {
         return super.getCompound(name);
     }
 
+    /**
+     * Check if the NBTCompound has a tag
+     * @param key String key
+     * @return true if the tag exists, false otherwise
+     */
     @Override
     public boolean hasTag(String key) {
         if (key.equalsIgnoreCase("custom")) {
@@ -53,6 +71,10 @@ public class NBTCustomTileEntity extends NBTTileEntity implements NBTCustom {
         return super.hasTag(key);
     }
 
+    /**
+     * Merge a compound into this compound
+     * @param comp The compound to merge
+     */
     @Override
     public void mergeCompound(NBTCompound comp) {
         super.mergeCompound(comp);
@@ -63,6 +85,11 @@ public class NBTCustomTileEntity extends NBTTileEntity implements NBTCustom {
         }
     }
 
+    /**
+     * Get the type of the NBT tag
+     * @param name The name of the tag
+     * @return The type of the tag
+     */
     @Override
     public NBTType getType(String name) {
         if (name.equalsIgnoreCase("custom")) {
@@ -71,6 +98,10 @@ public class NBTCustomTileEntity extends NBTTileEntity implements NBTCustom {
         return super.getType(name);
     }
 
+    /**
+     * Get the NBTCompound of this {@link BlockState}
+     * @return NBTCompound of this block
+     */
     @SuppressWarnings("DuplicatedCode")
     @Override
     public String toString() {
@@ -104,6 +135,9 @@ public class NBTCustomTileEntity extends NBTTileEntity implements NBTCustom {
         }
     }
 
+    /**
+     * Convert the old NBT data to the new system
+     */
     private void convert() {
         PersistentDataContainer container = ((TileState) blockState).getPersistentDataContainer();
         if (container.has(OLD_KEY, PersistentDataType.STRING)) {
@@ -117,6 +151,9 @@ public class NBTCustomTileEntity extends NBTTileEntity implements NBTCustom {
         }
     }
 
+    /**
+     * Save the compound to the block
+     */
     @Override
     protected void saveCompound() {
         super.saveCompound();

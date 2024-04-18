@@ -44,17 +44,32 @@ public class CommandListener implements Listener {
         event.setCancelled(true);
     }
 
+    /**
+     * Data class for the waystone command
+     *
+     * @param waystoneName The name of the waystone
+     * @param clickedWaystoneLocation The location of the clicked waystone
+     * @param waystoneLocation The location of the waystone
+     */
     public record WaystoneCommandData(
             String waystoneName,
             String clickedWaystoneLocation,
             String waystoneLocation
     ) {
+        /**
+         * Deserialize the data from a serialized string (Base64)
+         * @param serialized The serialized string
+         * @return The deserialized data
+         */
         public static WaystoneCommandData deserialize(String serialized) {
             String decoded = new String(Base64.getDecoder().decode(serialized));
             String[] split = decoded.split(":");
             return new WaystoneCommandData(split[0], split[1], split[2]);
         }
 
+        /**
+         * @return The Base64 serialized data
+         */
         public String serialize() {
             String serialized = waystoneName + ":" + clickedWaystoneLocation + ":" + waystoneLocation;
             return Base64.getEncoder().encodeToString(serialized.getBytes());

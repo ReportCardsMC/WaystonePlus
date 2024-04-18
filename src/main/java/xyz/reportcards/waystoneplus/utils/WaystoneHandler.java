@@ -139,20 +139,15 @@ public class WaystoneHandler {
 
     public static void teleportToWaystone(Player player, String waystoneName, SimpleLocation waystoneLocation) {
         WaystoneConfig waystoneConfig = WaystonePlus.getInstance().getWaystoneConfig();
+        if (!checkCooldown(player))
+            return;
+        setCooldown(player);
+
         switch (waystoneConfig.teleportCostType) {
             case NONE -> {
-                if (!checkCooldown(player))
-                    return;
-                setCooldown(player);
-
                 player.sendActionBar(Component.text("Teleporting to " + waystoneName, NamedTextColor.GREEN));
-                player.teleport(waystoneLocation.getBukkitLocation().add(0.5, 1.0, 0.5));
             }
             case XP -> {
-                if (!checkCooldown(player))
-                    return;
-                setCooldown(player);
-
                 if (player.getLevel() < waystoneConfig.teleportCostLevels) {
                     player.sendMessage(Component.text("You need at least " + waystoneConfig.teleportCostLevels + " levels to teleport!", NamedTextColor.RED));
                     return;
@@ -164,18 +159,12 @@ public class WaystoneHandler {
                                 .text("Teleporting to " + waystoneName, NamedTextColor.GREEN)
                                 .append(Component.text(" (Cost: " + waystoneConfig.teleportCostLevels + " levels)", NamedTextColor.GRAY))
                 );
-                player.teleport(waystoneLocation.getBukkitLocation().add(0.5, 1.0, 0.5));
             }
             case ITEM -> {
-                if (!checkCooldown(player))
-                    return;
-                setCooldown(player);
+                ItemStack item = new ItemStack(Objects.requireNonNull(Material.getMaterial(waystoneConfig.teleportCostItemType)), waystoneConfig.teleportCostItemAmount);
 
-                WaystoneConfig config = WaystonePlus.getInstance().getWaystoneConfig();
-                ItemStack item = new ItemStack(Objects.requireNonNull(Material.getMaterial(config.teleportCostItemType)), config.teleportCostItemAmount);
-
-                if (!player.getInventory().containsAtLeast(item, config.teleportCostItemAmount)) {
-                    player.sendMessage(Component.text("You need at least " + config.teleportCostItemAmount + " " + item.getType().name() + " to teleport!", NamedTextColor.RED));
+                if (!player.getInventory().containsAtLeast(item, waystoneConfig.teleportCostItemAmount)) {
+                    player.sendMessage(Component.text("You need at least " + waystoneConfig.teleportCostItemAmount + " " + item.getType().name() + " to teleport!", NamedTextColor.RED));
                     return;
                 }
 
@@ -183,13 +172,19 @@ public class WaystoneHandler {
                 player.sendActionBar(
                         Component
                                 .text("Teleporting to " + waystoneName, NamedTextColor.GREEN)
-                                .append(Component.text(" (Cost: " + config.teleportCostItemAmount + " " + item.getType().name() + ")", NamedTextColor.GRAY))
+                                .append(Component.text(" (Cost: " + waystoneConfig.teleportCostItemAmount + " " + item.getType().name() + ")", NamedTextColor.GRAY))
                 );
-                player.teleport(waystoneLocation.getBukkitLocation().add(0.5, 1.0, 0.5));
             }
         }
+
+        player.teleport(waystoneLocation.getBukkitLocation().add(0.5, 1.0, 0.5));
     }
 
+    /**
+     * Check if the player is on cooldown
+     * @param player The player to check
+     * @return If the player is on cooldown
+     */
     private static boolean checkCooldown(Player player) {
         if (player.hasMetadata("waystone-teleport-cooldown")) {
             long cooldown = player.getMetadata("waystone-teleport-cooldown").get(0).asLong();
