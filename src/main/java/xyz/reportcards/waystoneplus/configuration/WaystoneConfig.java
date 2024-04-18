@@ -33,8 +33,6 @@ public class WaystoneConfig {
     public HashMap<String, String> craftingRecipeIngredients = new HashMap<>();
 
     public WaystoneConfig(FileConfiguration from) {
-        // Load values from the provided FileConfiguration
-        // Use the ConfigValue annotation to map fields to keys
         HashMap<String, Field> fields = new HashMap<>();
         for (Field field : getClass().getDeclaredFields()) {
             field.setAccessible(true);
@@ -49,8 +47,6 @@ public class WaystoneConfig {
             Field field = entry.getValue();
             if (from.contains(key)) {
                 try {
-//                    field.set(this, from.get(key));
-                    // Check if enum
                     if (field.getType().isEnum()) {
                         try {
                             field.set(this, Enum.valueOf((Class<Enum>) field.getType(), Objects.requireNonNull(from.getString(key, "")).toUpperCase()));
@@ -84,7 +80,6 @@ public class WaystoneConfig {
         }
     }
 
-    // Enums (unchanged)
     public enum NameGeneration {WORDS, NUMBERS, LETTERS}
 
     public enum CostType {NONE, XP, ITEM}

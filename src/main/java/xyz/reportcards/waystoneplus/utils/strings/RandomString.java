@@ -30,11 +30,6 @@ public class RandomString {
         return generateString(numbers, length, exclude);
     }
 
-    public static String generateLettersAndNumbers(int length, ArrayList<String> exclude) {
-        String lettersAndNumbers = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        return generateString(lettersAndNumbers, length, exclude);
-    }
-
     public static String generateWithWords(int length, int maxLength, ArrayList<String> exclude) {
         StringBuilder builder = new StringBuilder();
         int attempts = 0;
