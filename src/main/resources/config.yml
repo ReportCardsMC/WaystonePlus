@@ -10,9 +10,6 @@ waystones:
       amount: 1
   teleport-sound: minecraft:entity.enderman.teleport # Sound played when teleporting
 
-spawning:
-  villages: true # Allow waystones to spawn in villages
-
 crafting:
   enabled: true # Allow crafting of waystones
   recipe:

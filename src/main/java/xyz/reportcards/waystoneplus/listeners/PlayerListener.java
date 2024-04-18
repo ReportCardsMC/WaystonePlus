@@ -1,6 +1,5 @@
 package xyz.reportcards.waystoneplus.listeners;
 
-import de.tr7zw.changeme.nbtapi.NBT;
 import de.tr7zw.changeme.nbtapi.NBTBlock;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -10,7 +9,10 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.*;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockExplodeEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -46,7 +48,7 @@ public class PlayerListener implements Listener {
 
         Player player = event.getPlayer();
 
-        if (player.hasMetadata("clickedTick") && player.getMetadata("clickedTick").get(0).asLong() >= Bukkit.getCurrentTick()-2)
+        if (player.hasMetadata("clickedTick") && player.getMetadata("clickedTick").get(0).asLong() >= Bukkit.getCurrentTick() - 2)
             return;
         player.setMetadata("clickedTick", new FixedMetadataValue(WaystonePlus.getInstance(), Bukkit.getCurrentTick()));
 
@@ -97,7 +99,7 @@ public class PlayerListener implements Listener {
         player.sendMessage(Component.text("Broke a waystone!", NamedTextColor.RED));
         WaystoneHandler.removeWaystone(block);
     }
-    
+
     @EventHandler
     public void onBlockExplode(BlockExplodeEvent event) {
         for (Block block : event.blockList()) {

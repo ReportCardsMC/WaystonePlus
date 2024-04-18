@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.reportcards.waystoneplus.configuration.WaystoneConfig;
+import xyz.reportcards.waystoneplus.listeners.CommandListener;
 import xyz.reportcards.waystoneplus.listeners.PlayerListener;
 import xyz.reportcards.waystoneplus.utils.WaystoneHandler;
 import xyz.reportcards.waystoneplus.utils.nbt.APIUtils;
@@ -17,6 +18,10 @@ public final class WaystonePlus extends JavaPlugin {
     @Getter
     Gson gson;
 
+    public static WaystonePlus getInstance() {
+        return getPlugin(WaystonePlus.class);
+    }
+
     @Override
     public void onEnable() {
         this.gson = new Gson();
@@ -28,6 +33,7 @@ public final class WaystonePlus extends JavaPlugin {
         }
 
         getServer().getPluginManager().registerEvents(new PlayerListener(), this);
+        getServer().getPluginManager().registerEvents(new CommandListener(), this);
 
         this.saveDefaultConfig();
         this.waystoneConfig = new WaystoneConfig(this.getConfig());
@@ -40,9 +46,5 @@ public final class WaystonePlus extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
-    }
-
-    public static WaystonePlus getInstance() {
-        return getPlugin(WaystonePlus.class);
     }
 }

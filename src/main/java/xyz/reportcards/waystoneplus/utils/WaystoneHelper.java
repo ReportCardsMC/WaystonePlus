@@ -7,6 +7,7 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import xyz.reportcards.waystoneplus.listeners.CommandListener;
 import xyz.reportcards.waystoneplus.utils.nbt.NBTCustomBlock;
 import xyz.reportcards.waystoneplus.utils.nbt.models.WaystoneNBT;
 
@@ -62,9 +63,11 @@ public class WaystoneHelper {
         return sortedWaystoneLocations;
     }
 
-    private static List<Component> buildWaystoneBookPages(List<SimpleLocation> sortedWaystoneLocations,
-                                                          Map<SimpleLocation, Double> waystoneDistances,
-                                                          SimpleLocation clickedWaystoneLocation) {
+    private static List<Component> buildWaystoneBookPages(
+            List<SimpleLocation> sortedWaystoneLocations,
+            Map<SimpleLocation, Double> waystoneDistances,
+            SimpleLocation clickedWaystoneLocation
+    ) {
         int pageSize = 14;
         List<Component> pages = new ArrayList<>();
 
@@ -99,13 +102,21 @@ public class WaystoneHelper {
     private static String getWaystoneDisplayString(SimpleLocation waystoneLocation, SimpleLocation clickedWaystoneLocation,
                                                    double distance, String clickedWaystoneName) {
         boolean isClickedWaystone = waystoneLocation.equals(clickedWaystoneLocation);
-        String name = isClickedWaystone ? clickedWaystoneName :  getWaystoneNBT(waystoneLocation).waystoneName;
+        String name = isClickedWaystone ? clickedWaystoneName : getWaystoneNBT(waystoneLocation).waystoneName;
+
+        if (isClickedWaystone) { // Ignore distance for clicked waystone, as well as make it unclickable
+            return "<yellow>[<gold>0m<yellow>] <black>" + name;
+        }
 
         long distanceRounded = Math.round(distance);
-        return "<yellow>[<gold>" + distanceRounded + "m<yellow>] <black>" + name;
+        String serializedData = new CommandListener.WaystoneCommandData(
+                name,
+                clickedWaystoneLocation.toString(),
+                waystoneLocation.toString()
+        ).serialize();
+        return "<yellow>[<gold>" + distanceRounded + "m<yellow>] <black><click:run_command:'/waystoneplus:waystone " + serializedData + "'>" + name + "</click>";
 
     }
-
 
 
 }

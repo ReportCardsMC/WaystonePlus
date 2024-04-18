@@ -11,6 +11,7 @@ import java.lang.annotation.Target;
 public @interface ConfigValue {
 
     String key();
+
     boolean customHandler() default false;
 
 }

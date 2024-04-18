@@ -19,6 +19,15 @@ public class SimpleLocation {
         this.z = z;
     }
 
+    public static SimpleLocation fromString(String string) {
+        String[] parts = string.split(",");
+        return new SimpleLocation(parts[0], Long.parseLong(parts[1]), Long.parseLong(parts[2]), Long.parseLong(parts[3]));
+    }
+
+    public static SimpleLocation fromBukkitLocation(Location location) {
+        return new SimpleLocation(location.getWorld().getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ());
+    }
+
     public Location getBukkitLocation() {
         return new Location(Bukkit.getWorld(world), x, y, z);
     }
@@ -29,12 +38,7 @@ public class SimpleLocation {
 
     @Override
     public String toString() {
-        return "SimpleLocation{" +
-                "world='" + world + '\'' +
-                ", x=" + x +
-                ", y=" + y +
-                ", z=" + z +
-                '}';
+        return world + "," + x + "," + y + "," + z;
     }
 
     @Override
@@ -48,9 +52,5 @@ public class SimpleLocation {
     @Override
     public int hashCode() {
         return Objects.hash(world, x, y, z);
-    }
-
-    public static SimpleLocation fromBukkitLocation(Location location) {
-        return new SimpleLocation(location.getWorld().getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ());
     }
 }

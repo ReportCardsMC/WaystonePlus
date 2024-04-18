@@ -9,6 +9,29 @@ import java.util.Objects;
 
 public class WaystoneConfig {
 
+    @ConfigValue(key = "waystones.max-teleport-distance")
+    public int maxTeleportDistance;
+    @ConfigValue(key = "waystones.teleport-cooldown")
+    public int teleportCooldown;
+    @ConfigValue(key = "waystones.teleport-cost.type")
+    public CostType teleportCostType;
+    @ConfigValue(key = "waystones.teleport-cost.levels")
+    public int teleportCostLevels;
+    @ConfigValue(key = "waystones.teleport-cost.item.type")
+    public String teleportCostItemType;
+    @ConfigValue(key = "waystones.teleport-cost.item.amount")
+    public int teleportCostItemAmount;
+    @ConfigValue(key = "waystones.teleport-sound")
+    public String teleportSound;
+    @ConfigValue(key = "waystones.names")
+    public NameGeneration nameGeneration;
+    @ConfigValue(key = "crafting.enabled")
+    public boolean craftingEnabled;
+    @ConfigValue(key = "crafting.recipe.type")
+    public RecipeType recipeType; // Assuming this is still needed
+    public String[] craftingRecipeShape; // New field to handle shape
+    public HashMap<String, String> craftingRecipeIngredients = new HashMap<>();
+
     public WaystoneConfig(FileConfiguration from) {
         // Load values from the provided FileConfiguration
         // Use the ConfigValue annotation to map fields to keys
@@ -59,43 +82,6 @@ public class WaystoneConfig {
             throw new IllegalStateException("Crafting is enabled but the recipe is not properly configured!");
         }
     }
-
-    @ConfigValue(key = "waystones.max-teleport-distance")
-    public int maxTeleportDistance;
-
-    @ConfigValue(key = "waystones.teleport-cooldown")
-    public int teleportCooldown;
-
-    @ConfigValue(key = "waystones.teleport-cost.type")
-    public CostType teleportCostType;
-
-    @ConfigValue(key = "waystones.teleport-cost.levels")
-    public int teleportCostLevels;
-
-    @ConfigValue(key = "waystones.teleport-cost.item.type")
-    public String teleportCostItemType;
-
-    @ConfigValue(key = "waystones.teleport-cost.item.amount")
-    public int teleportCostItemAmount;
-
-    @ConfigValue(key = "waystones.teleport-sound")
-    public String teleportSound;
-
-    @ConfigValue(key = "waystones.names")
-    public NameGeneration nameGeneration;
-
-    @ConfigValue(key = "spawning.villages")
-    public boolean spawningInVillages;
-
-    @ConfigValue(key = "crafting.enabled")
-    public boolean craftingEnabled;
-
-    @ConfigValue(key = "crafting.recipe.type")
-    public RecipeType recipeType; // Assuming this is still needed
-
-    public String[] craftingRecipeShape; // New field to handle shape
-
-    public HashMap<String, String> craftingRecipeIngredients = new HashMap<>();
 
     // Enums (unchanged)
     public enum NameGeneration {WORDS, NUMBERS, LETTERS}
