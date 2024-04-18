@@ -145,6 +145,7 @@ public class WaystoneHandler {
                     return;
                 setCooldown(player);
 
+                player.sendActionBar(Component.text("Teleporting to " + waystoneName, NamedTextColor.GREEN));
                 player.teleport(waystoneLocation.getBukkitLocation().add(0.5, 1.0, 0.5));
             }
             case XP -> {
@@ -158,6 +159,11 @@ public class WaystoneHandler {
                 }
 
                 player.setLevel(player.getLevel() - waystoneConfig.teleportCostLevels);
+                player.sendActionBar(
+                        Component
+                                .text("Teleporting to " + waystoneName, NamedTextColor.GREEN)
+                                .append(Component.text(" (Cost: " + waystoneConfig.teleportCostLevels + " levels)", NamedTextColor.GRAY))
+                );
                 player.teleport(waystoneLocation.getBukkitLocation().add(0.5, 1.0, 0.5));
             }
             case ITEM -> {
@@ -174,6 +180,11 @@ public class WaystoneHandler {
                 }
 
                 player.getInventory().removeItem(item);
+                player.sendActionBar(
+                        Component
+                                .text("Teleporting to " + waystoneName, NamedTextColor.GREEN)
+                                .append(Component.text(" (Cost: " + config.teleportCostItemAmount + " " + item.getType().name() + ")", NamedTextColor.GRAY))
+                );
                 player.teleport(waystoneLocation.getBukkitLocation().add(0.5, 1.0, 0.5));
             }
         }
