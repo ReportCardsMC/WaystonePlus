@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * A configuration class for waystones
+ */
 public class WaystoneConfig {
 
     @ConfigValue(key = "waystones.max-teleport-distance")
@@ -32,6 +35,10 @@ public class WaystoneConfig {
     public String[] craftingRecipeShape; // New field to handle shape
     public HashMap<String, String> craftingRecipeIngredients = new HashMap<>();
 
+    /**
+     * Create a new waystone configuration instance
+     * @param from The file configuration to load from
+     */
     public WaystoneConfig(FileConfiguration from) {
         HashMap<String, Field> fields = new HashMap<>();
         for (Field field : getClass().getDeclaredFields()) {
@@ -80,9 +87,18 @@ public class WaystoneConfig {
         }
     }
 
+    /**
+     * The types of random name generation
+     */
     public enum NameGeneration {WORDS, NUMBERS, LETTERS}
 
+    /**
+     * The types of costs for teleporting
+     */
     public enum CostType {NONE, XP, ITEM}
 
+    /**
+     * The types of crafting recipes
+     */
     public enum RecipeType {SHAPED, SHAPELESS}
 }

@@ -12,8 +12,15 @@ import xyz.reportcards.waystoneplus.utils.nbt.models.WaystoneNBT;
 import java.util.Base64;
 import java.util.Objects;
 
+/**
+ * A listener for the waystone command, which is used to teleport to a waystone
+ */
 public class CommandListener implements Listener {
 
+    /**
+     * Handle the waystone command
+     * @param event The event
+     */
     @EventHandler
     public void onCommand(PlayerCommandPreprocessEvent event) {
         Player player = event.getPlayer();

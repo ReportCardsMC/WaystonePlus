@@ -2,6 +2,9 @@ package xyz.reportcards.waystoneplus.utils.strings;
 
 import java.util.ArrayList;
 
+/**
+ * A utility class to generate random strings
+ */
 public class RandomString {
 
     /**

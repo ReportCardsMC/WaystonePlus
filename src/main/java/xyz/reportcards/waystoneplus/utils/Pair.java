@@ -2,6 +2,11 @@ package xyz.reportcards.waystoneplus.utils;
 
 import java.util.Objects;
 
+/**
+ * A simple location class that can be serialized and deserialized
+ * @param <T1> The type of the first object
+ * @param <T2> The type of the second object
+ */
 public class Pair<T1, T2> {
 
     public T1 first;

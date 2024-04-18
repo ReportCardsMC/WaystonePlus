@@ -22,6 +22,9 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+ * The waystone handler class, handles all direct waystone handling tasks
+ */
 public class WaystoneHandler {
 
     public static Set<Pair<String, SimpleLocation>> cachedWaystones = new HashSet<>();
@@ -72,10 +75,6 @@ public class WaystoneHandler {
     public static void saveWaystones() {
         Bukkit.getScheduler().runTaskAsynchronously(WaystonePlus.getInstance(), () -> {
             try {
-//                Bukkit.getLogger().info("""
-//                        Saving waystones...
-//                        Waystones: %s
-//                        """.formatted(WaystonePlus.getInstance().getGson().toJson(cachedWaystones)));
                 FileUtils.writeStringToFile(waystoneFile, WaystonePlus.getInstance().getGson().toJson(cachedWaystones), Charset.defaultCharset());
             } catch (Exception e) {
                 Bukkit.getLogger().severe("Failed to save waystones!");

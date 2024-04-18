@@ -12,17 +12,34 @@ import xyz.reportcards.waystoneplus.utils.nbt.APIUtils;
 
 public final class WaystonePlus extends JavaPlugin {
 
+    /**
+     * The instance of the plugin
+     */
     @Getter
     private WaystoneConfig waystoneConfig;
+    /**
+     * The instance of the waystone handler
+     */
     @Getter
     private WaystoneHandler waystoneHandler;
+    /**
+     * The instance of the Gson object
+     */
     @Getter
     private Gson gson;
 
+    /**
+     * Get the instance of the plugin
+     *
+     * @return The instance of the plugin
+     */
     public static WaystonePlus getInstance() {
         return getPlugin(WaystonePlus.class);
     }
 
+    /**
+     * Called when the plugin is enabled
+     */
     @Override
     public void onEnable() {
         this.gson = new Gson();

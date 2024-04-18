@@ -6,9 +6,11 @@ import xyz.reportcards.waystoneplus.utils.strings.RandomString;
 
 import java.util.ArrayList;
 
+/**
+ * A class to store waystone NBT data
+ */
 public class WaystoneNBT {
 
-    public boolean publicWaystone = false;
     public String waystoneName;
 
     /**

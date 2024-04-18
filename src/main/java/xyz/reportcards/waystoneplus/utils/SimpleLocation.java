@@ -5,6 +5,9 @@ import org.bukkit.Location;
 
 import java.util.Objects;
 
+/**
+ * A simple location class that can be serialized and deserialized
+ */
 public class SimpleLocation {
 
     String world;

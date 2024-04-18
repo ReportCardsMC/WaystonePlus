@@ -4,6 +4,9 @@ import de.tr7zw.changeme.nbtapi.NBTBlock;
 import de.tr7zw.changeme.nbtapi.NBTCompound;
 import org.bukkit.block.Block;
 
+/**
+ * A custom NBT class for Blocks, this is a custom implementation of the NBT-API implementation for Blocks
+ */
 public class NBTCustomBlock extends NBTBlock {
 
     private final Block block;

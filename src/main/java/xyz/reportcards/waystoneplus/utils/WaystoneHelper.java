@@ -16,6 +16,9 @@ import xyz.reportcards.waystoneplus.utils.nbt.models.WaystoneNBT;
 
 import java.util.*;
 
+/**
+ * Class to help with waystone items, and the waystone book
+ */
 public class WaystoneHelper {
 
     private static final String WAYSTONE_NBT_TAG = "waystone";

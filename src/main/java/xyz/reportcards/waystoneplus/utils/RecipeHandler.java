@@ -12,6 +12,9 @@ import xyz.reportcards.waystoneplus.configuration.WaystoneConfig;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * A class to handle the waystone recipe
+ */
 public class RecipeHandler {
 
     /**

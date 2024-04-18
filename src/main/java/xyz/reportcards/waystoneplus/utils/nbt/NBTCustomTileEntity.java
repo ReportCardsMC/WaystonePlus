@@ -6,6 +6,9 @@ import org.bukkit.block.TileState;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
+/**
+ * A custom NBT class for TileEntities, this is a custom implementation of the NBT-API implementation for TileEntities
+ */
 public class NBTCustomTileEntity extends NBTTileEntity implements NBTCustom {
 
     private final BlockState blockState;

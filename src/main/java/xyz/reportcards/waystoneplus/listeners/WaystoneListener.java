@@ -26,10 +26,17 @@ import xyz.reportcards.waystoneplus.utils.nbt.models.WaystoneNBT;
 
 import java.util.ArrayList;
 
+/**
+ * A listener for the waystone, which is used to handle waystone events
+ */
 public class WaystoneListener implements Listener {
 
     private static final Material WAYSTONE_BLOCK = Material.LODESTONE;
 
+    /**
+     * Handle the waystone click event to open the waystone book GUI when a player clicks on a waystone
+     * @param event The event
+     */
     @EventHandler
     public void onWaystoneClick(PlayerInteractEvent event) {
         Block block = event.getClickedBlock();
@@ -50,6 +57,7 @@ public class WaystoneListener implements Listener {
         if (!WaystoneHandler.isWaystone(block))
             return;
 
+        // Check if they're trying to break the block instead of opening the gui
         if (isLeftClick && !player.isSneaking()) {
             player.sendMessage(Component.text("To break a waystone, sneak and break it!", NamedTextColor.RED));
             event.setCancelled(true);
@@ -59,6 +67,10 @@ public class WaystoneListener implements Listener {
         WaystoneHelper.openWaystoneBook(player, SimpleLocation.fromBukkitLocation(block.getLocation()));
     }
 
+    /**
+     * Handle the waystone place event to add a waystone to the cache when a player places a waystone
+     * @param event The event
+     */
     @EventHandler
     public void onWaystonePlace(BlockPlaceEvent event) {
         Player player = event.getPlayer();
@@ -78,6 +90,10 @@ public class WaystoneListener implements Listener {
         WaystoneHandler.addWaystone(event.getBlockPlaced());
     }
 
+    /**
+     * Handle the waystone break event to remove a waystone from the cache when a player breaks a waystone
+     * @param event The event
+     */
     @EventHandler
     public void onWaystoneBreak(BlockBreakEvent event) {
         Player player = event.getPlayer();
@@ -89,8 +105,15 @@ public class WaystoneListener implements Listener {
 
         player.sendMessage(Component.text("Broke a waystone!", NamedTextColor.RED));
         WaystoneHandler.removeWaystone(block);
+
+        event.setDropItems(false);
+        block.getWorld().dropItemNaturally(block.getLocation(), WaystoneHelper.createWaystoneItem());
     }
 
+    /**
+     * Handle the block explode event to remove waystones from the cache when a waystone explodes
+     * @param event The event
+     */
     @EventHandler
     public void onBlockExplode(BlockExplodeEvent event) {
         for (Block block : event.blockList()) {
@@ -101,6 +124,10 @@ public class WaystoneListener implements Listener {
         }
     }
 
+    /**
+     * Handle the entity explode event to remove waystones from the cache when a waystone explodes
+     * @param event The event
+     */
     @EventHandler
     public void onEntityExplode(EntityExplodeEvent event) {
         for (Block block : event.blockList()) {
