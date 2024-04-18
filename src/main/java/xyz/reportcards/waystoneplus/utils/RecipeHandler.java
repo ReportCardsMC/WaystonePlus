@@ -8,6 +8,7 @@ import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
 import xyz.reportcards.waystoneplus.WaystonePlus;
 import xyz.reportcards.waystoneplus.configuration.WaystoneConfig;
+import xyz.reportcards.waystoneplus.waystones.WaystoneHelper;
 
 import java.util.HashMap;
 import java.util.Map;

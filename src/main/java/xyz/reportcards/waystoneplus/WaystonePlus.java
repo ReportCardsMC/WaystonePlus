@@ -7,7 +7,7 @@ import xyz.reportcards.waystoneplus.configuration.WaystoneConfig;
 import xyz.reportcards.waystoneplus.listeners.CommandListener;
 import xyz.reportcards.waystoneplus.listeners.WaystoneListener;
 import xyz.reportcards.waystoneplus.utils.RecipeHandler;
-import xyz.reportcards.waystoneplus.utils.WaystoneHandler;
+import xyz.reportcards.waystoneplus.waystones.WaystoneHandler;
 import xyz.reportcards.waystoneplus.utils.nbt.APIUtils;
 
 public final class WaystonePlus extends JavaPlugin {

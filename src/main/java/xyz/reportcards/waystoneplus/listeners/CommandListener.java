@@ -5,7 +5,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import xyz.reportcards.waystoneplus.utils.SimpleLocation;
-import xyz.reportcards.waystoneplus.utils.WaystoneHandler;
+import xyz.reportcards.waystoneplus.waystones.WaystoneHandler;
 import xyz.reportcards.waystoneplus.utils.nbt.NBTCustomBlock;
 import xyz.reportcards.waystoneplus.utils.nbt.models.WaystoneNBT;
 

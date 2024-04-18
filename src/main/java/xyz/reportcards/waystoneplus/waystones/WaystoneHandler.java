@@ -1,4 +1,4 @@
-package xyz.reportcards.waystoneplus.utils;
+package xyz.reportcards.waystoneplus.waystones;
 
 import com.google.common.reflect.TypeToken;
 import net.kyori.adventure.text.Component;
@@ -12,6 +12,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import xyz.reportcards.waystoneplus.WaystonePlus;
 import xyz.reportcards.waystoneplus.configuration.WaystoneConfig;
+import xyz.reportcards.waystoneplus.utils.Pair;
+import xyz.reportcards.waystoneplus.utils.SimpleLocation;
 import xyz.reportcards.waystoneplus.utils.nbt.NBTCustomBlock;
 import xyz.reportcards.waystoneplus.utils.nbt.models.WaystoneNBT;
 

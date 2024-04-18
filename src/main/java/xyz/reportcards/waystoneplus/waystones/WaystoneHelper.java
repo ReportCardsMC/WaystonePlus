@@ -1,4 +1,4 @@
-package xyz.reportcards.waystoneplus.utils;
+package xyz.reportcards.waystoneplus.waystones;
 
 import de.tr7zw.changeme.nbtapi.NBT;
 import net.kyori.adventure.inventory.Book;
@@ -11,6 +11,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import xyz.reportcards.waystoneplus.listeners.CommandListener;
+import xyz.reportcards.waystoneplus.utils.Pair;
+import xyz.reportcards.waystoneplus.utils.SimpleLocation;
 import xyz.reportcards.waystoneplus.utils.nbt.NBTCustomBlock;
 import xyz.reportcards.waystoneplus.utils.nbt.models.WaystoneNBT;
 

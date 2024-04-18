@@ -19,8 +19,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import xyz.reportcards.waystoneplus.WaystonePlus;
 import xyz.reportcards.waystoneplus.utils.SimpleLocation;
-import xyz.reportcards.waystoneplus.utils.WaystoneHandler;
-import xyz.reportcards.waystoneplus.utils.WaystoneHelper;
+import xyz.reportcards.waystoneplus.waystones.WaystoneHandler;
+import xyz.reportcards.waystoneplus.waystones.WaystoneHelper;
 import xyz.reportcards.waystoneplus.utils.nbt.NBTCustomBlock;
 import xyz.reportcards.waystoneplus.utils.nbt.models.WaystoneNBT;
 
