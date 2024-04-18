@@ -108,7 +108,6 @@ public class WaystoneHelper {
     private static List<SimpleLocation> sortWaystonesByDistance(Map<SimpleLocation, Double> waystoneDistances) {
         List<SimpleLocation> sortedWaystoneLocations = new ArrayList<>(waystoneDistances.keySet());
         sortedWaystoneLocations.sort(Comparator.comparingDouble(waystoneDistances::get));
-        WaystoneConfig config = WaystonePlus.getInstance().getWaystoneConfig();
         return sortedWaystoneLocations;
     }
 
