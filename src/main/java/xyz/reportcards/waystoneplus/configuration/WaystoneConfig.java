@@ -12,27 +12,63 @@ import java.util.Objects;
  */
 public class WaystoneConfig {
 
+    /**
+     * The max distance a player can teleport
+     */
     @ConfigValue(key = "waystones.max-teleport-distance")
     public int maxTeleportDistance;
+    /**
+     * The cooldown for teleporting
+     */
     @ConfigValue(key = "waystones.teleport-cooldown")
     public int teleportCooldown;
+    /**
+     * The cost for teleporting
+     */
     @ConfigValue(key = "waystones.teleport-cost.type")
     public CostType teleportCostType;
+    /**
+     * The cost for teleporting in levels
+     */
     @ConfigValue(key = "waystones.teleport-cost.levels")
     public int teleportCostLevels;
+    /**
+     * The cost for teleporting in items
+     */
     @ConfigValue(key = "waystones.teleport-cost.item.type")
     public String teleportCostItemType;
+    /**
+     * The amount of items needed to teleport
+     */
     @ConfigValue(key = "waystones.teleport-cost.item.amount")
     public int teleportCostItemAmount;
+    /**
+     * The sound to play when teleporting
+     */
     @ConfigValue(key = "waystones.teleport-sound")
     public String teleportSound;
+    /**
+     * The message to send when teleporting
+     */
     @ConfigValue(key = "waystones.names")
     public NameGeneration nameGeneration;
+    /**
+     * The message to send when teleporting
+     */
     @ConfigValue(key = "crafting.enabled")
     public boolean craftingEnabled;
+    /**
+     * The type of crafting recipe
+     */
     @ConfigValue(key = "crafting.recipe.type")
     public RecipeType recipeType; // Assuming this is still needed
+    /**
+     * The shape of the crafting recipe
+     */
     public String[] craftingRecipeShape; // New field to handle shape
+    /**
+     * The ingredients of the crafting recipe
+     */
     public HashMap<String, String> craftingRecipeIngredients = new HashMap<>();
 
     /**
