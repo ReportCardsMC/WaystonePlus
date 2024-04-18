@@ -38,8 +38,6 @@ public final class WaystonePlus extends JavaPlugin {
         this.saveDefaultConfig();
         this.waystoneConfig = new WaystoneConfig(this.getConfig());
 
-        getLogger().info(gson.toJson(waystoneConfig));
-
         this.waystoneHandler = new WaystoneHandler(this);
     }
 

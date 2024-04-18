@@ -61,5 +61,5 @@ processResources {
 }
 
 shadowJar {
-    relocate('de.tr7zw.itemnbtapi', 'xyz.reportcards.itemnbtapi')
+    relocate('de.tr7zw.changeme', 'xyz.reportcards.itemnbtapi')
 }

@@ -40,7 +40,7 @@ public class WaystoneHandler {
             }
         } else {
             try {
-                Type setType = new TypeToken<HashSet<SimpleLocation>>() {
+                Type setType = new TypeToken<HashSet<Pair<String, SimpleLocation>>>() {
                 }.getType();
                 cachedWaystones = instance.getGson().fromJson(FileUtils.readFileToString(waystoneFile, Charset.defaultCharset()), setType);
 
@@ -143,7 +143,7 @@ public class WaystoneHandler {
                     return;
                 setCooldown(player);
 
-                player.teleport(waystoneLocation.getBukkitLocation());
+                player.teleport(waystoneLocation.getBukkitLocation().add(0.5, 1.0, 0.5));
             }
             case XP -> {
                 if (!checkCooldown(player))
@@ -156,7 +156,7 @@ public class WaystoneHandler {
                 }
 
                 player.setLevel(player.getLevel() - waystoneConfig.teleportCostLevels);
-                player.teleport(waystoneLocation.getBukkitLocation());
+                player.teleport(waystoneLocation.getBukkitLocation().add(0.5, 1.0, 0.5));
             }
             case ITEM -> {
                 if (!checkCooldown(player))
@@ -172,7 +172,7 @@ public class WaystoneHandler {
                 }
 
                 player.getInventory().removeItem(item);
-                player.teleport(waystoneLocation.getBukkitLocation());
+                player.teleport(waystoneLocation.getBukkitLocation().add(0.5, 1.0, 0.5));
             }
         }
     }

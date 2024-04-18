@@ -41,9 +41,8 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onWaystoneClick(PlayerInteractEvent event) {
         Block block = event.getClickedBlock();
-        assert block != null;
 
-        if (!block.getType().equals(WAYSTONE_BLOCK))
+        if (block == null || !block.getType().equals(WAYSTONE_BLOCK))
             return;
 
         Player player = event.getPlayer();
