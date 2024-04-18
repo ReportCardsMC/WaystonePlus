@@ -20,6 +20,10 @@ public class WaystoneHelper {
 
     private static final String WAYSTONE_NBT_TAG = "waystone";
 
+    /**
+     * Create a new waystone item with the appropriate meta, and NBT data
+     * @return The waystone item
+     */
     public static ItemStack createWaystoneItem() {
         ItemStack stack = new ItemStack(Material.LODESTONE);
         stack.editMeta(meta -> {
@@ -33,6 +37,11 @@ public class WaystoneHelper {
         return stack;
     }
 
+    /**
+     * Check if an item is a waystone item
+     * @param itemStack The item to check
+     * @return Whether the item is a waystone item
+     */
     public static boolean isWaystoneItem(ItemStack itemStack) {
         if (itemStack == null) {
             return false;
@@ -42,10 +51,20 @@ public class WaystoneHelper {
         });
     }
 
+    /**
+     * Get the waystone NBT data from a block
+     * @param location The location of the block
+     * @return The waystone NBT data
+     */
     public static WaystoneNBT getWaystoneNBT(SimpleLocation location) {
         return WaystoneNBT.fromString(new NBTCustomBlock(location.getBukkitLocation().getBlock()).getData().getString(WAYSTONE_NBT_TAG));
     }
 
+    /**
+     * Open the waystone book for a player
+     * @param player The player to open the book for
+     * @param clickedWaystoneLocation The location of the clicked waystone
+     */
     public static void openWaystoneBook(Player player, SimpleLocation clickedWaystoneLocation) {
         Map<SimpleLocation, Double> waystoneDistances = calculateDistancesToWaystones(clickedWaystoneLocation);
         List<SimpleLocation> sortedWaystoneLocations = sortWaystonesByDistance(waystoneDistances);
@@ -57,6 +76,11 @@ public class WaystoneHelper {
         player.openBook(bookBuilder);
     }
 
+    /**
+     * Calculate the distances to all waystones from a clicked waystone
+     * @param clickedWaystoneLocation The location of the clicked waystone
+     * @return A map of waystone locations to their distances
+     */
     private static Map<SimpleLocation, Double> calculateDistancesToWaystones(SimpleLocation clickedWaystoneLocation) {
         Map<SimpleLocation, Double> waystoneDistances = new HashMap<>();
         for (Pair<String, SimpleLocation> waystone : WaystoneHandler.cachedWaystones) {
@@ -65,12 +89,24 @@ public class WaystoneHelper {
         return waystoneDistances;
     }
 
+    /**
+     * Sort waystones by distance
+     * @param waystoneDistances The map of waystone locations to their distances
+     * @return A list of waystone locations sorted by distance
+     */
     private static List<SimpleLocation> sortWaystonesByDistance(Map<SimpleLocation, Double> waystoneDistances) {
         List<SimpleLocation> sortedWaystoneLocations = new ArrayList<>(waystoneDistances.keySet());
         sortedWaystoneLocations.sort(Comparator.comparingDouble(waystoneDistances::get));
         return sortedWaystoneLocations;
     }
 
+    /**
+     * Build the pages of the waystone book
+     * @param sortedWaystoneLocations The list of waystone locations sorted by distance
+     * @param waystoneDistances The map of waystone locations to their distances
+     * @param clickedWaystoneLocation The location of the clicked waystone
+     * @return A list of pages for the waystone book
+     */
     private static List<Component> buildWaystoneBookPages(
             List<SimpleLocation> sortedWaystoneLocations,
             Map<SimpleLocation, Double> waystoneDistances,
@@ -107,6 +143,14 @@ public class WaystoneHelper {
         return pages;
     }
 
+    /**
+     * Get the display string for a waystone
+     * @param waystoneLocation The location of the waystone
+     * @param clickedWaystoneLocation The location of the clicked waystone
+     * @param distance The distance to the waystone
+     * @param clickedWaystoneName The name of the clicked waystone
+     * @return The display string for the waystone
+     */
     private static String getWaystoneDisplayString(SimpleLocation waystoneLocation, SimpleLocation clickedWaystoneLocation,
                                                    double distance, String clickedWaystoneName) {
         boolean isClickedWaystone = waystoneLocation.equals(clickedWaystoneLocation);
