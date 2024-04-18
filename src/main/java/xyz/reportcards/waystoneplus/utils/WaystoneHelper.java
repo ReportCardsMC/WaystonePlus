@@ -14,53 +14,78 @@ import java.util.*;
 
 public class WaystoneHelper {
 
-    public static ItemStack getWaystoneItem() {
+    private static final String WAYSTONE_NBT_TAG = "waystone";
+
+    public static ItemStack createWaystoneItem() {
         ItemStack stack = new ItemStack(Material.LODESTONE);
         NBT.modify(stack, nbt -> {
-            nbt.setBoolean("waystone", true);
+            nbt.setBoolean(WAYSTONE_NBT_TAG, true);
         });
         return stack;
     }
 
-    public static boolean isWaystoneItem(ItemStack itemUsed) {
-        if (itemUsed == null) return false;
-        return NBT.get(itemUsed, nbt -> {
-            return nbt.hasTag("waystone");
+    public static boolean isWaystoneItem(ItemStack itemStack) {
+        if (itemStack == null) {
+            return false;
+        }
+        return NBT.get(itemStack, nbt -> {
+            return nbt.getBoolean(WAYSTONE_NBT_TAG);
         });
     }
 
-    public static WaystoneNBT getWaystoneNBT(SimpleLocation at) {
-        return WaystoneNBT.fromString(new NBTCustomBlock(at.getBukkitLocation().getBlock()).getData().getString("waystone"));
+    public static WaystoneNBT getWaystoneNBT(SimpleLocation location) {
+        return WaystoneNBT.fromString(new NBTCustomBlock(location.getBukkitLocation().getBlock()).getData().getString(WAYSTONE_NBT_TAG));
     }
 
-    public static void openWaystoneBook(Player player, SimpleLocation clickedWaystone) {
-        String clickedWaystoneName = getWaystoneNBT(clickedWaystone).waystoneName;
+    public static void openWaystoneBook(Player player, SimpleLocation clickedWaystoneLocation) {
+        Map<SimpleLocation, Double> waystoneDistances = calculateDistancesToWaystones(clickedWaystoneLocation);
+        List<SimpleLocation> sortedWaystoneLocations = sortWaystonesByDistance(waystoneDistances);
 
-        Map<SimpleLocation, Long> distances = new HashMap<>();
-        for (SimpleLocation cachedWaystone : WaystoneHandler.cachedWaystones) {
-            if (!Objects.equals(cachedWaystone.world, clickedWaystone.world)) continue;
-            distances.put(cachedWaystone, (long) clickedWaystone.distance(cachedWaystone));
+        Book.Builder bookBuilder = Book.builder().title(Component.text("Waystone"));
+        List<Component> pages = buildWaystoneBookPages(sortedWaystoneLocations, waystoneDistances, clickedWaystoneLocation);
+        bookBuilder.pages(pages);
+
+        player.openBook(bookBuilder);
+    }
+
+    private static Map<SimpleLocation, Double> calculateDistancesToWaystones(SimpleLocation clickedWaystoneLocation) {
+        Map<SimpleLocation, Double> waystoneDistances = new HashMap<>();
+        for (Pair<String, SimpleLocation> waystone : WaystoneHandler.cachedWaystones) {
+            waystoneDistances.put(waystone.second, clickedWaystoneLocation.distance(waystone.second));
         }
+        return waystoneDistances;
+    }
 
-        List<SimpleLocation> sortedWaystones = new ArrayList<>(distances.keySet());
-        sortedWaystones.sort((o1, o2) -> (int) (distances.get(o1) - distances.get(o2)));
+    private static List<SimpleLocation> sortWaystonesByDistance(Map<SimpleLocation, Double> waystoneDistances) {
+        List<SimpleLocation> sortedWaystoneLocations = new ArrayList<>(waystoneDistances.keySet());
+        sortedWaystoneLocations.sort(Comparator.comparingDouble(waystoneDistances::get));
+        return sortedWaystoneLocations;
+    }
 
-        Book.Builder bookBuilder = Book.builder();
-        bookBuilder.title(Component.text("Waystone"));
-
+    private static List<Component> buildWaystoneBookPages(List<SimpleLocation> sortedWaystoneLocations,
+                                                          Map<SimpleLocation, Double> waystoneDistances,
+                                                          SimpleLocation clickedWaystoneLocation) {
         int pageSize = 14;
         List<Component> pages = new ArrayList<>();
 
         StringBuilder currentPage = new StringBuilder();
         int currentPageSize = 0;
-        for (SimpleLocation cachedWaystone : sortedWaystones) {
+
+        for (SimpleLocation waystoneLocation : sortedWaystoneLocations) {
+            String waystoneString = getWaystoneDisplayString(
+                    waystoneLocation,
+                    clickedWaystoneLocation,
+                    waystoneDistances.get(waystoneLocation),
+                    getWaystoneNBT(waystoneLocation).waystoneName
+            );
+
             if (currentPageSize >= pageSize) {
                 pages.add(MiniMessage.miniMessage().deserialize(currentPage.toString()));
                 currentPage = new StringBuilder();
                 currentPageSize = 0;
             }
 
-            currentPage.append(getWaystoneString(player, cachedWaystone, clickedWaystone, distances.get(cachedWaystone), clickedWaystoneName)).append("\n");
+            currentPage.append(waystoneString).append("\n");
             currentPageSize++;
         }
 
@@ -68,16 +93,19 @@ public class WaystoneHelper {
             pages.add(MiniMessage.miniMessage().deserialize(currentPage.toString()));
         }
 
-        bookBuilder.pages(pages);
-        player.openBook(bookBuilder);
+        return pages;
     }
 
-    private static String getWaystoneString(Player player, SimpleLocation waystone, SimpleLocation clickedWaystone, Long distance, String clickedWaystonName) {
-        if (clickedWaystone == waystone) {
-            return "<yellow>[<gold>%sm<yellow>] <black>%s".formatted(distance, clickedWaystonName);
-        }
+    private static String getWaystoneDisplayString(SimpleLocation waystoneLocation, SimpleLocation clickedWaystoneLocation,
+                                                   double distance, String clickedWaystoneName) {
+        boolean isClickedWaystone = waystoneLocation.equals(clickedWaystoneLocation);
+        String name = isClickedWaystone ? clickedWaystoneName :  getWaystoneNBT(waystoneLocation).waystoneName;
 
-        String name = getWaystoneNBT(waystone).waystoneName;
-        return "<yellow>[<gold>%sm<yellow>] <black>%s".formatted(distance, name);
+        long distanceRounded = Math.round(distance);
+        return "<yellow>[<gold>" + distanceRounded + "m<yellow>] <black>" + name;
+
     }
+
+
+
 }

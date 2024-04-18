@@ -3,7 +3,7 @@ package xyz.reportcards.waystoneplus;
 import com.google.gson.Gson;
 import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;
-import xyz.reportcards.waystoneplus.configuration.ConfigurationHandler;
+import xyz.reportcards.waystoneplus.configuration.WaystoneConfig;
 import xyz.reportcards.waystoneplus.listeners.PlayerListener;
 import xyz.reportcards.waystoneplus.utils.WaystoneHandler;
 import xyz.reportcards.waystoneplus.utils.nbt.APIUtils;
@@ -11,7 +11,7 @@ import xyz.reportcards.waystoneplus.utils.nbt.APIUtils;
 public final class WaystonePlus extends JavaPlugin {
 
     @Getter
-    ConfigurationHandler configurationHandler;
+    WaystoneConfig waystoneConfig;
     @Getter
     WaystoneHandler waystoneHandler;
     @Getter
@@ -29,7 +29,11 @@ public final class WaystonePlus extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new PlayerListener(), this);
 
-        this.configurationHandler = new ConfigurationHandler(this);
+        this.saveDefaultConfig();
+        this.waystoneConfig = new WaystoneConfig(this.getConfig());
+
+        getLogger().info(gson.toJson(waystoneConfig));
+
         this.waystoneHandler = new WaystoneHandler(this);
     }
 

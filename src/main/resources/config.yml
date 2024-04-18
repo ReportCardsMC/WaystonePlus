@@ -1,5 +1,5 @@
 waystones:
-  names: "words" # How to generate waystone names: words, numbers, random-letters
+  names: "words" # How to generate waystone names: words, numbers, letters
   max-teleport-distance: 3000 # Max distance a player can teleport with a waystone
   teleport-cooldown: 0 # Cooldown between teleports (in seconds)
   teleport-cost:
@@ -22,9 +22,6 @@ crafting:
     - 'GWG'
     - 'DGD'
     ingredients:
-      D:
-        type: minecraft:diamond
-      G:
-        type: minecraft:gold_ingot
-      W:
-        type: minecraft:compass
+      D: minecraft:diamond
+      G: minecraft:gold_ingot
+      W: minecraft:compass

@@ -3,6 +3,7 @@ package xyz.reportcards.waystoneplus.listeners;
 import de.tr7zw.changeme.nbtapi.NBT;
 import de.tr7zw.changeme.nbtapi.NBTBlock;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -22,6 +23,8 @@ import xyz.reportcards.waystoneplus.utils.WaystoneHelper;
 import xyz.reportcards.waystoneplus.utils.nbt.NBTCustomBlock;
 import xyz.reportcards.waystoneplus.utils.nbt.models.WaystoneNBT;
 
+import java.util.ArrayList;
+
 public class PlayerListener implements Listener {
 
     private static final Material WAYSTONE_BLOCK = Material.LODESTONE;
@@ -30,41 +33,36 @@ public class PlayerListener implements Listener {
     public void onJoin(PlayerJoinEvent event) {
         // Give player a waystone
         Player player = event.getPlayer();
-        player.getInventory().addItem(WaystoneHelper.getWaystoneItem());
+        player.getInventory().addItem(WaystoneHelper.createWaystoneItem());
     }
 
     @EventHandler
     public void onWaystoneClick(PlayerInteractEvent event) {
+        Block block = event.getClickedBlock();
+        assert block != null;
+
+        if (!block.getType().equals(WAYSTONE_BLOCK))
+            return;
+
         Player player = event.getPlayer();
 
-        if (player.hasMetadata("clickedTick") && player.getMetadata("clickedTick").get(0).asLong() >= Bukkit.getCurrentTick()-2) return;
+        if (player.hasMetadata("clickedTick") && player.getMetadata("clickedTick").get(0).asLong() >= Bukkit.getCurrentTick()-2)
+            return;
         player.setMetadata("clickedTick", new FixedMetadataValue(WaystonePlus.getInstance(), Bukkit.getCurrentTick()));
 
-        if (event.getClickedBlock() == null) return;
         boolean isLeftClick = (event.getAction().equals(Action.LEFT_CLICK_BLOCK) || event.getAction().equals(Action.LEFT_CLICK_AIR));
+        if (isLeftClick && player.isSneaking())
+            return;
 
+        if (!WaystoneHandler.isWaystone(block))
+            return;
 
-        if (
-                isLeftClick &&
-                player.isSneaking()
-        ) return;
-
-        if (
-            isLeftClick &&
-            !player.isSneaking()
-        ) {
-            player.sendMessage(Component.text("To break a waystone, sneak and break it!"));
+        if (isLeftClick && !player.isSneaking()) {
+            player.sendMessage(Component.text("To break a waystone, sneak and break it!", NamedTextColor.RED));
+            event.setCancelled(true);
+            return;
         }
 
-        Block block = event.getClickedBlock();
-        if (!block.getType().equals(WAYSTONE_BLOCK)) return;
-
-        // Check NBT of block to see if it's a waystone
-        if (!WaystoneHandler.isWaystone(block)) return;
-
-        NBTCustomBlock nbtBlock = new NBTCustomBlock(block);
-        WaystoneNBT waystone = WaystoneNBT.fromString(nbtBlock.getData().getString("waystone"));
-        event.getPlayer().sendMessage("Clicked a waystone: " + waystone.waystoneName);
         WaystoneHelper.openWaystoneBook(player, SimpleLocation.fromBukkitLocation(block.getLocation()));
     }
 
@@ -76,9 +74,13 @@ public class PlayerListener implements Listener {
         ItemStack itemUsed = event.getItemInHand();
         if (!WaystoneHelper.isWaystoneItem(itemUsed)) return;
 
-        player.sendMessage("Placed a waystone!");
+        player.sendMessage(Component.text("Placed a waystone!", NamedTextColor.GREEN));
         NBTBlock block = new NBTBlock(event.getBlockPlaced());
-        block.getData().setString("waystone", new WaystoneNBT().toString());
+        ArrayList<String> exclude = new ArrayList<>();
+        for (var waystone : WaystoneHandler.cachedWaystones) {
+            exclude.add(waystone.first);
+        }
+        block.getData().setString("waystone", new WaystoneNBT(exclude).toString());
 
         WaystoneHandler.addWaystone(event.getBlockPlaced());
     }
@@ -92,7 +94,7 @@ public class PlayerListener implements Listener {
         NBTCustomBlock nbtBlock = new NBTCustomBlock(block);
         if (!nbtBlock.getData().hasTag("waystone")) return;
 
-        player.sendMessage("Broke a waystone!");
+        player.sendMessage(Component.text("Broke a waystone!", NamedTextColor.RED));
         WaystoneHandler.removeWaystone(block);
     }
     

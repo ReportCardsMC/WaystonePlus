@@ -6,10 +6,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import xyz.reportcards.waystoneplus.WaystonePlus;
 import xyz.reportcards.waystoneplus.utils.nbt.NBTCustomBlock;
+import xyz.reportcards.waystoneplus.utils.nbt.models.WaystoneNBT;
 
 import java.io.File;
 import java.lang.reflect.Type;
 import java.nio.charset.Charset;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -34,8 +36,8 @@ public class WaystoneHandler {
                 Type setType = new TypeToken<HashSet<SimpleLocation>>(){}.getType();
                 cachedWaystones = instance.getGson().fromJson(FileUtils.readFileToString(waystoneFile, Charset.defaultCharset()), setType);
 
-                for (SimpleLocation cachedWaystone : cachedWaystones) {
-                    Block block = cachedWaystone.getBukkitLocation().getBlock();
+                for (Pair<String, SimpleLocation> cachedWaystone : cachedWaystones) {
+                    Block block = cachedWaystone.second.getBukkitLocation().getBlock();
                     if (!new NBTCustomBlock(block).getData().hasTag("waystone")) {
                         cachedWaystones.remove(cachedWaystone);
                     }
@@ -50,7 +52,7 @@ public class WaystoneHandler {
     }
 
     static File waystoneFile;
-    public static Set<SimpleLocation> cachedWaystones = new HashSet<>();
+    public static Set<Pair<String, SimpleLocation>> cachedWaystones = new HashSet<>();
 
     public static void saveWaystones() {
         Bukkit.getScheduler().runTaskAsynchronously(WaystonePlus.getInstance(), () -> {
@@ -69,27 +71,39 @@ public class WaystoneHandler {
 
     public static void addWaystone(Block block) {
         if (!new NBTCustomBlock(block).getData().hasTag("waystone")) return;
-
-        SimpleLocation location = new SimpleLocation(block.getWorld().getName(), block.getX(), block.getY(), block.getZ());
-        if (cachedWaystones.add(location)) saveWaystones();
+        Pair<String, SimpleLocation> waystone = getWaystoneNameAndLocation(block);
+        assert waystone != null;
+        if (cachedWaystones.add(new Pair<>(waystone.first, waystone.second))) saveWaystones();
     }
 
     public static void removeWaystone(Block block) {
-        if (!new NBTCustomBlock(block).getData().hasTag("waystone")) return;
-
-        SimpleLocation location = new SimpleLocation(block.getWorld().getName(), block.getX(), block.getY(), block.getZ());
-        if (cachedWaystones.remove(location)) saveWaystones();
+        Pair<String, SimpleLocation> waystone = getWaystoneNameAndLocation(block);
+        assert waystone != null;
+        if (cachedWaystones.remove(new Pair<>(waystone.first, waystone.second))) saveWaystones();
     }
 
     public static boolean isWaystone(Block block) {
         var nbtBlock = new NBTCustomBlock(block);
         SimpleLocation loc = new SimpleLocation(block.getWorld().getName(), block.getX(), block.getY(), block.getZ());
+
         if (!nbtBlock.getData().hasTag("waystone")) {
-            if (cachedWaystones.remove(loc)) saveWaystones();
+            boolean anyChange = false;
+            for (Pair<String, SimpleLocation> cachedWaystone : cachedWaystones) {
+                if (cachedWaystone.second.equals(loc)) {
+                    cachedWaystones.remove(cachedWaystone);
+                    anyChange = true;
+                }
+            }
+
+            if (anyChange)
+                saveWaystones();
             return false;
         }
 
-        if (cachedWaystones.add(loc)) saveWaystones();
+        WaystoneNBT nbt = WaystoneNBT.fromString(nbtBlock.getData().getString("waystone"));
+        String name = nbt.waystoneName;
+        if (cachedWaystones.add(new Pair<>(name, loc)))
+            saveWaystones();
         return true;
     }
 
@@ -103,6 +117,13 @@ public class WaystoneHandler {
         Block block = location.getBukkitLocation().getBlock();
 
         return isWaystone(block);
+    }
+
+    private static Pair<String, SimpleLocation> getWaystoneNameAndLocation(Block block) {
+        if (!new NBTCustomBlock(block).getData().hasTag("waystone")) return null;
+
+        WaystoneNBT nbt = WaystoneNBT.fromString(new NBTCustomBlock(block).getData().getString("waystone"));
+        return new Pair<>(nbt.waystoneName, new SimpleLocation(block.getWorld().getName(), block.getX(), block.getY(), block.getZ()));
     }
 
 }
