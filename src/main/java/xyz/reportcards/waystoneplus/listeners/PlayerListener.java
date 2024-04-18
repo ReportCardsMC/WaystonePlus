@@ -31,13 +31,6 @@ public class PlayerListener implements Listener {
 
     private static final Material WAYSTONE_BLOCK = Material.LODESTONE;
 
-//    @EventHandler
-//    public void onJoin(PlayerJoinEvent event) {
-//        // Give player a waystone
-//        Player player = event.getPlayer();
-//        player.getInventory().addItem(WaystoneHelper.createWaystoneItem());
-//    }
-
     @EventHandler
     public void onWaystoneClick(PlayerInteractEvent event) {
         Block block = event.getClickedBlock();
