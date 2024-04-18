@@ -27,6 +27,7 @@ public class WaystoneHandler {
     public static Set<Pair<String, SimpleLocation>> cachedWaystones = new HashSet<>();
     static File waystoneFile;
     WaystonePlus instance;
+
     public WaystoneHandler(WaystonePlus instance) {
         this.instance = instance;
         waystoneFile = new File(instance.getDataFolder(), "waystones.json");

@@ -15,9 +15,9 @@ crafting:
   recipe:
     type: shaped # Recipe type: shaped, shapeless
     shape: # If shapeless, doesn't take shape into account, rather only the amount of items
-    - 'DGD'
-    - 'GWG'
-    - 'DGD'
+      - 'DGD'
+      - 'GWG'
+      - 'DGD'
     ingredients:
       D: DIAMOND
       G: GOLD_INGOT
